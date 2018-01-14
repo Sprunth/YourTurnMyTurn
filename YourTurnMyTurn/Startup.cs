@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Nancy.Owin;
+using YourTurnMyTurn.Services;
 
 namespace YourTurnMyTurn
 {
@@ -16,6 +17,7 @@ namespace YourTurnMyTurn
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ITurnResolver, TurnResolver>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,7 +28,7 @@ namespace YourTurnMyTurn
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseOwin(x => x.UseNancy());
+            app.UseOwin(x => x.UseNancy(new NancyOptions() {Bootstrapper = new Bootstrapper()}));
 
             //app.Run(async (context) =>
             //{
