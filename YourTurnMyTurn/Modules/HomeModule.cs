@@ -10,13 +10,7 @@ namespace YourTurnMyTurn.Modules
     {
         public HomeModule()
         {
-            Get("/", o => "Hello World");
-            Get("/test/{name}", o => new TestPerson() {Name = o.name});
+            Get("/", o => "YourTurnMyTurn");
         }
-    }
-
-    public class TestPerson
-    {
-        public string Name { get; set; }
     }
 }

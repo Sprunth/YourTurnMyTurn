@@ -7,7 +7,7 @@ namespace YourTurnMyTurn.Models
 {
     public class Group
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
         public ISet<string> People { get; set; }
     }
