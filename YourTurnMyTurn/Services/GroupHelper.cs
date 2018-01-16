@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Nancy;
+using Nancy.Responses;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using YourTurnMyTurn.Models;
@@ -18,13 +20,14 @@ namespace YourTurnMyTurn.Services
             db = dbConnectionFactory.CreateDbConnection();
         }
 
-        public bool CreateGroup(Group group)
+        public Response CreateGroup(string name)
         {
+            var group = new Group() {Name = name};
             db.Open();
             db.Insert(group);
-            db.Close(); 
+            db.Close();
 
-            return true;  // todo: when false?
+            return new TextResponse(statusCode: HttpStatusCode.OK, contents: $"Group: {group.Id}");
         }
     }
 }

@@ -1,0 +1,131 @@
+swagger: '2.0'
+info:
+  description: >-
+    Your Turn My Turn API docs
+  version: 1.0.0
+  title: Your Turn My Turn
+  termsOfService: 'http://???'
+  contact:
+    email: todo@example.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.example.com'
+host: 'yourturnmyturn.azurewebsites.com'
+basePath: /api/v1
+tags:
+  - name: Group
+    description: Group Operations
+  - name: User
+    description: User Operations
+  - name: Turn
+    description: Turn Operations
+schemes:
+  - http
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: 'http://yourturnmyturn.azurewebsites.com/authorize'
+    flow: implicit
+    scopes:
+      'write:pets': modify pets in your account
+      'read:pets': read your pets
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  Group:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      users:
+        type: array
+        description: list of userIds
+        items:
+          type: string
+          description: userId
+    required: 
+      - id
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      groups:
+        type: array
+        description: list of groupIds
+        items:
+          type: string
+          description: groupId
+    required: 
+      - id
+paths:
+  /group:
+    post:
+      tags:
+        - Group
+      summary: Create a Group
+      description: ''
+      operationId: CreateGroup
+      parameters:
+        - in: body
+          name: name
+          description: Group name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
+        404:
+          description: Group not found
+  /user:
+    post:
+      tags:
+        - User
+      summary: Create a User
+      description: ''
+      operationId: CreateUser
+      parameters:
+        - in: body
+          name: username
+          description: Username
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: User not found
+  /nextturn:
+    patch:
+      tags:
+        - Turn
+      summary: Get user for next turn
+      description: ''
+      operationId: NextTurn
+      parameters:
+        - in: body
+          name: groupId
+          description: Group ID
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+externalDocs:
+  description: YourTurnMyTurn docs
+  url: 'http://yourturnmyturn.azurewebsites.com/docs'

@@ -21,7 +21,7 @@ namespace YourTurnMyTurn.Modules
             this.groupHelper = groupHelper;
 
             Get(prefix + "group/{groupId}/next", o => turnResolver.NextPerson(o["groupId"]));
-            Post(prefix + "group/{groupId}", o => groupHelper.CreateGroup(new Group() {Name = o["groupId"]}));
+            Post(prefix + "group/{name}", o => groupHelper.CreateGroup(o.name));
         }
     }
 }
