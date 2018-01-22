@@ -14,14 +14,17 @@ namespace YourTurnMyTurn.Modules
 
         private ITurnResolver turnResolver;
         private GroupHelper groupHelper;
+        private PersonHelper personHelper;
 
-        public Api(ITurnResolver turnResolver, GroupHelper groupHelper)
+        public Api(ITurnResolver turnResolver, GroupHelper groupHelper, PersonHelper personHelper)
         {
             this.turnResolver = turnResolver;
             this.groupHelper = groupHelper;
+            this.personHelper = personHelper;
 
             Get(prefix + "group/{groupId}/next", o => turnResolver.NextPerson(o["groupId"]));
             Post(prefix + "group/{name}", o => groupHelper.CreateGroup(o.name));
+            Post(prefix + "person/{name}", o => personHelper.CreatePerson(o.name));
         }
     }
 }
