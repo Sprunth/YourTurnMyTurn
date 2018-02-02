@@ -11,7 +11,7 @@ namespace YourTurnMyTurn.Services
 {
     public interface ITurnResolver
     {
-        Person NextPerson(string groupId);
+       Person NextPerson(string groupId);
     }
 
     public class TurnResolver : ITurnResolver
@@ -32,14 +32,21 @@ namespace YourTurnMyTurn.Services
         public Person NextPerson(string groupId)
         {
             db.Open();
-            var group = db.SingleById<Group>(groupId);
-            var people = db.Select<Person>(person => group.People.Contains(person.Id));
+            db.Close();
+            return new Person();
+        }
 
-            if (people.Count == 0)
-                return null;
-
-            // todo: real taking turns logic
-            return people[0];
+        public List<(string Id, decimal Value, string Name)> GroupMemberInfo(string groupId)
+        {
+            db.Open();
+            var q = db.From<PersonToGroup>()
+                .Join<Person>()
+                .Select<PersonToGroup, Person>(
+                    (ptg, p) => new { p.Id, ptg.Value, p.Name }
+                );
+            var groupMembers = db.Select<(string Id, decimal Value, string Name)>(q);
+            db.Close();
+            return groupMembers;
         }
     }
 }

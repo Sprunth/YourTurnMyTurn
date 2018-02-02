@@ -9,7 +9,8 @@ namespace YourTurnMyTurn.Models
     [CompositeIndex(nameof(PersonId), nameof(GroupId))]
     public class PersonToGroup
     {
-        public string Id { get; set; }
+        [AutoIncrement]
+        public int Id { get; set; }
 
         [Index]
         public string PersonId { get; set; }
