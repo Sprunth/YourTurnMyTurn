@@ -35,18 +35,5 @@ namespace YourTurnMyTurn.Services
             db.Close();
             return new Person();
         }
-
-        public List<(string Id, decimal Value, string Name)> GroupMemberInfo(string groupId)
-        {
-            db.Open();
-            var q = db.From<PersonToGroup>()
-                .Join<Person>()
-                .Select<PersonToGroup, Person>(
-                    (ptg, p) => new { p.Id, ptg.Value, p.Name }
-                );
-            var groupMembers = db.Select<(string Id, decimal Value, string Name)>(q);
-            db.Close();
-            return groupMembers;
-        }
     }
 }

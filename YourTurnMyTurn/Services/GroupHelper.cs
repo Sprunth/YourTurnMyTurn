@@ -42,5 +42,19 @@ namespace YourTurnMyTurn.Services
             db.Close();
             return new TextResponse(statusCode: HttpStatusCode.OK, contents: $"{groupMember}");
         }
+
+        public List<Dictionary<string, object>> GroupMemberInfo(string groupId)
+        {
+            db.Open();
+            var q = db.From<PersonToGroup>()
+                .Join<Person>()
+                .Select<PersonToGroup, Person>(
+                    (ptg, p) => new { p.Id, ptg.Value, p.Name }
+                );
+            
+            var groupMembers = db.Select<Dictionary<string, object>>(q);
+            db.Close();
+            return groupMembers;
+        }
     }
 }
