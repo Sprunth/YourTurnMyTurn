@@ -11,7 +11,7 @@ namespace YourTurnMyTurn.Services
 {
     public interface ITurnResolver
     {
-       Person NextPerson(string groupId);
+        Dictionary<string, object> NextPerson(string groupId);
     }
 
     public class TurnResolver : ITurnResolver
@@ -29,11 +29,20 @@ namespace YourTurnMyTurn.Services
             db.Close();
         }
         
-        public Person NextPerson(string groupId)
+        public Dictionary<string, object> NextPerson(string groupId)
         {
             db.Open();
+            //Get group member with lowest value
+            var q = db.From<PersonToGroup>()
+                .Join<Person>()
+                .OrderBy(e => e.Value)
+                .Select<PersonToGroup, Person>(
+                    (ptg, p) => new { p.Id, ptg.Value, p.Name }
+                );
+
+            var nextPerson = db.Single<Dictionary<string, object>>(q);
             db.Close();
-            return new Person();
+            return nextPerson;
         }
     }
 }

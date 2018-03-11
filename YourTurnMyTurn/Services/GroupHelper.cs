@@ -46,6 +46,7 @@ namespace YourTurnMyTurn.Services
         public List<Dictionary<string, object>> GroupMemberInfo(string groupId)
         {
             db.Open();
+
             var q = db.From<PersonToGroup>()
                 .Join<Person>()
                 .Select<PersonToGroup, Person>(
