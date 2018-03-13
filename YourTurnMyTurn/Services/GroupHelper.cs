@@ -18,6 +18,10 @@ namespace YourTurnMyTurn.Services
         public GroupHelper(IDbConnectionFactory dbConnectionFactory)
         {
             db = dbConnectionFactory.CreateDbConnection();
+            db.Open();
+            db.CreateTableIfNotExists<Group>();
+            db.CreateTableIfNotExists<PersonToGroup>();
+            db.Close();
         }
 
         public Response CreateGroup(string name)
@@ -33,15 +37,25 @@ namespace YourTurnMyTurn.Services
         public Response AddPersonToGroup(string groupId, string personId)
         {
             db.Open();
-            var group = db.Single<Group>(x => x.Id == groupId);
-            if(group.People == null)
-            {
-                group.People = new List<string>();
-            }
-            group.People.Add(personId);
-            db.Update(group);
+            var groupMember = new PersonToGroup { GroupId = groupId, PersonId = personId, Value = 0 };  //TODO: determine how to assign value is group has been running and members have value
+            db.Insert(groupMember);
             db.Close();
-            return new TextResponse(statusCode: HttpStatusCode.OK, contents: $"{group}");
+            return new TextResponse(statusCode: HttpStatusCode.OK, contents: $"{groupMember}");
+        }
+
+        public List<Dictionary<string, object>> GroupMemberInfo(string groupId)
+        {
+            db.Open();
+
+            var q = db.From<PersonToGroup>()
+                .Join<Person>()
+                .Select<PersonToGroup, Person>(
+                    (ptg, p) => new { p.Id, ptg.Value, p.Name }
+                );
+            
+            var groupMembers = db.Select<Dictionary<string, object>>(q);
+            db.Close();
+            return groupMembers;
         }
     }
 }
