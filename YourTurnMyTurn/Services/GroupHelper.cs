@@ -44,6 +44,15 @@ namespace YourTurnMyTurn.Services
             return new TextResponse(statusCode: HttpStatusCode.OK, contents: $"{groupMember.Id}");  //returns Id unique to that person in that group
         }
 
+        public decimal AddValueToPersonInGroup(string groupMemberId, decimal value)
+        {
+            db.Open();
+            db.UpdateAdd(() => new PersonToGroup { ContributedValue = value }, where: entry => entry.Id == groupMemberId);
+            PersonToGroup updatedUserInGroup = db.Single<PersonToGroup>(entry => entry.Id == groupMemberId);
+            db.Close();
+            return updatedUserInGroup.ContributedValue;
+        }
+
         public List<Dictionary<string, object>> GroupMemberInfo(string groupId)
         {
             db.Open();
@@ -51,7 +60,8 @@ namespace YourTurnMyTurn.Services
             var q = db.From<PersonToGroup>()
                 .Join<Person>()
                 .Select<PersonToGroup, Person>(
-                    (ptg, p) => new { p.Id, ptg.ContributedValue, p.Name }
+                    //return the id for their entry in the group for ContributedValue modification
+                    (ptg, p) => new { ptg.Id, ptg.ContributedValue, p.Name }
                 );
             
             var groupMembers = db.Select<Dictionary<string, object>>(q);
