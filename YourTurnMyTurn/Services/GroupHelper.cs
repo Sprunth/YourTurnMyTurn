@@ -37,7 +37,7 @@ namespace YourTurnMyTurn.Services
         public Response AddPersonToGroup(string groupId, string personId)
         {
             db.Open();
-            var groupMember = new PersonToGroup { GroupId = groupId, PersonId = personId, Value = 0 };  //TODO: determine how to assign value is group has been running and members have value
+            var groupMember = new PersonToGroup { GroupId = groupId, PersonId = personId, ContributedValue = 0 };  //TODO: determine how to assign value is group has been running and members have value
             db.Insert(groupMember);
             db.Close();
             return new TextResponse(statusCode: HttpStatusCode.OK, contents: $"{groupMember}");
@@ -50,7 +50,7 @@ namespace YourTurnMyTurn.Services
             var q = db.From<PersonToGroup>()
                 .Join<Person>()
                 .Select<PersonToGroup, Person>(
-                    (ptg, p) => new { p.Id, ptg.Value, p.Name }
+                    (ptg, p) => new { p.Id, ptg.ContributedValue, p.Name }
                 );
             
             var groupMembers = db.Select<Dictionary<string, object>>(q);
