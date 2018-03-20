@@ -35,9 +35,9 @@ namespace YourTurnMyTurn.Services
             //Get group member with lowest value
             var q = db.From<PersonToGroup>()
                 .Join<Person>()
-                .OrderBy(e => e.Value)
+                .OrderBy(e => e.ContributedValue)
                 .Select<PersonToGroup, Person>(
-                    (ptg, p) => new { p.Id, ptg.Value, p.Name }
+                    (ptg, p) => new { ptg.Id, ptg.ContributedValue, p.Name }
                 );
 
             var nextPerson = db.Single<Dictionary<string, object>>(q);
