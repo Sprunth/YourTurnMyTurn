@@ -26,6 +26,7 @@ namespace YourTurnMyTurn.Modules
             Get(prefix + "group/{groupId}", o => groupHelper.GroupMemberInfo(o.groupId));
             Post(prefix + "group/{name}", o => groupHelper.CreateGroup(o.name));
             Post(prefix + "group/{groupId}/add/{pid}", o => groupHelper.AddPersonToGroup(o.groupId, o.pid));
+            Post(prefix + "group/{groupMemberId}/contribute/{value}", o => groupHelper.AddValueToPersonInGroup(o.groupMemberId, o.value));
 
             Post(prefix + "person/{name}", o => personHelper.CreatePerson(o.name));
         }
