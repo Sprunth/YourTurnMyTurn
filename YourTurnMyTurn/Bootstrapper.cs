@@ -31,7 +31,8 @@ namespace YourTurnMyTurn
             //var factory = new OrmLiteConnectionFactory("todo connection string", SqliteDialect.Provider);
             //var db = factory.CreateDbConnection();
             //db.Open();
-            
+
         }
+        
     }
 }
