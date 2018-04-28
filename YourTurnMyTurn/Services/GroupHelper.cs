@@ -58,6 +58,7 @@ namespace YourTurnMyTurn.Services
             db.Open();
 
             var q = db.From<PersonToGroup>()
+                .Where(personToGroup => personToGroup.GroupId.Equals(groupId))
                 .Join<Person>()
                 .Select<PersonToGroup, Person>(
                     //return the id for their entry in the group for ContributedValue modification
