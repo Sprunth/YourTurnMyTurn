@@ -1,17 +1,21 @@
 <template>
-  <div class="hello">
+ <el-container>
+   <el-header>
     <h1>{{ msg }}</h1>
-    <input v-model="groupname">
-    <button v-on:click="createGroup">Create Group</button>
+   </el-header>
+   <el-main>
+    <h2>Selected Group: {{ groupname }}</h2>
+    <el-input v-model="groupname"/>
+    <el-button v-on:click="createGroup">Create Group</el-button>
     <br>
     {{ groupid }}
     <br><br>
-    <input v-model="personname">
-    <button v-on:click="createPerson">Create Person</button>
+    <el-input v-model="personname"/>
+    <el-button v-on:click="createPerson">Create Person</el-button>
     <br>
     <br>
-    <h2>Group Members {{ groupname }}</h2>
-    <button v-on:click="fetchGroupMembers">Fetch</button>
+    <h2>Group Members</h2>
+    <el-button v-on:click="fetchGroupMembers">Fetch</el-button>
     <br><br>
     <table style="align: ">
       <thead>
@@ -24,7 +28,8 @@
         </tr>
       </tbody>
     </table>
-  </div>
+   </el-main>
+  </el-container>
 </template>
 
 <script>
