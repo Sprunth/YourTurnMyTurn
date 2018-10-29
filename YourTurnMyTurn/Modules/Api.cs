@@ -18,6 +18,17 @@ namespace YourTurnMyTurn.Modules
 
         public Api(ITurnResolver turnResolver, GroupHelper groupHelper, PersonHelper personHelper)
         {
+            /* allow CORS */
+            Options("/{catchAll*}", parameters => new Response {StatusCode = HttpStatusCode.Accepted});
+
+            After += (Context) =>
+            {
+                Context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                Context.Response.Headers.Add("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+                Context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, x-requested-with, Authorization, Accept, Origin");
+            };
+            /* CORS end */
+
             this.turnResolver = turnResolver;
             this.groupHelper = groupHelper;
             this.personHelper = personHelper;

@@ -56,14 +56,13 @@ namespace YourTurnMyTurn.Services
         public List<Dictionary<string, object>> GroupMemberInfo(string groupId)
         {
             db.Open();
-
             var q = db.From<PersonToGroup>()
+                .Where(personToGroup => personToGroup.GroupId == groupId)
                 .Join<Person>()
                 .Select<PersonToGroup, Person>(
                     //return the id for their entry in the group for ContributedValue modification
-                    (ptg, p) => new { ptg.Id, ptg.ContributedValue, p.Name }
+                    (ptg, p) => new {ptg.Id, ptg.ContributedValue, p.Name}
                 );
-            
             var groupMembers = db.Select<Dictionary<string, object>>(q);
             db.Close();
             return groupMembers;
